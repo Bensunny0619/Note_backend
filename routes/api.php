@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('notes/{id}/archive', [\App\Http\Controllers\NoteController::class, 'archive']);
     Route::put('notes/{id}/unarchive', [\App\Http\Controllers\NoteController::class, 'unarchive']);
     Route::put('notes/{id}/color', [\App\Http\Controllers\NoteController::class, 'color']);
+    
+    Route::get('ping', function() { return response()->json(['message' => 'pong']); });
 
     // Checklists
     Route::post('notes/{noteId}/checklist', [\App\Http\Controllers\ChecklistController::class, 'store']);

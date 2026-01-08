@@ -47,7 +47,7 @@ class AuthController extends Controller
         // Create default preference
         $user->preference()->create();
 
-        $token = JWTAuth::fromUser($user);
+        $token = auth('api')->login($user);
 
         return response()->json([
             'message' => 'User successfully registered',
