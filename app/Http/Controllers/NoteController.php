@@ -226,6 +226,13 @@ class NoteController extends Controller
 
     public function uploadAudio(Request $request, $id)
     {
+        \Illuminate\Support\Facades\Log::info("Audio Upload Request for Note ID: $id", [
+            'has_file' => $request->hasFile('audio'),
+            'all_files' => $request->allFiles(),
+            'headers' => $request->headers->all(),
+            'post_data' => $request->all()
+        ]);
+
         $note = Note::where('user_id', Auth::id())->findOrFail($id);
         if ($request->hasFile('audio')) {
             $file = $request->file('audio');
@@ -241,11 +248,18 @@ class NoteController extends Controller
             
             return response()->json($recording, 201);
         }
-        return response()->json(['error' => 'No audio file provided'], 422);
+        return response()->json(['error' => 'No audio file provided', 'debug_files' => $request->allFiles()], 422);
     }
 
     public function uploadDrawing(Request $request, $id)
     {
+        \Illuminate\Support\Facades\Log::info("Drawing Upload Request for Note ID: $id", [
+            'has_file' => $request->hasFile('drawing'),
+            'all_files' => $request->allFiles(),
+            'headers' => $request->headers->all(),
+            'post_data' => $request->all()
+        ]);
+
         $note = Note::where('user_id', Auth::id())->findOrFail($id);
         if ($request->hasFile('drawing')) {
             $file = $request->file('drawing');
@@ -261,6 +275,6 @@ class NoteController extends Controller
             
             return response()->json($drawing, 201);
         }
-        return response()->json(['error' => 'No drawing file provided'], 422);
+        return response()->json(['error' => 'No drawing file provided', 'debug_files' => $request->allFiles()], 422);
     }
 }
